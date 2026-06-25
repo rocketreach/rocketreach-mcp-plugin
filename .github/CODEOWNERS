@@ -1,0 +1,2 @@
+# default devops for anything not enumerated (in CODEOWNERS, the *last* match is what gets used)
+* @rocketreach/devops

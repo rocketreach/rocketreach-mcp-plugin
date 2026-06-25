@@ -1,0 +1,85 @@
+name: Bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: "Service/repository name (e.g. my-service)"
+        required: true
+        type: string
+      codeowners_team:
+        description: "GitHub team for CODEOWNERS (e.g. @rocketreach/my-team)"
+        required: true
+        type: string
+      jira_ticket:
+        description: "Jira ticket number (e.g. CLOUD-1234)"
+        required: true
+        type: string
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: ${{ inputs.service_name }}
+      CODEOWNERS_TEAM: ${{ inputs.codeowners_team }}
+      JIRA_TICKET: ${{ inputs.jira_ticket }}
+    steps:
+      - name: Validate inputs
+        run: |
+          if [[ ! "${SERVICE_NAME}" =~ ^[a-z0-9][a-z0-9_-]*$ ]]; then
+            echo "::error::service_name must be lowercase alphanumeric with hyphens/underscores"
+            exit 1
+          fi
+          if [[ ! "${CODEOWNERS_TEAM}" =~ ^@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then
+            echo "::error::codeowners_team must be in the format @org/team-name"
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: rocketreach/github-actions/github/checkout@main
+        with:
+          token: ${{ secrets.ENG_ADMIN_PAT_FOR_BOOTSTRAPPING }}
+
+      - name: Update README title
+        run: |
+          sed -i "s/{{SERVICE_NAME}}/${SERVICE_NAME}/" README.md
+
+      - name: Update CODEOWNERS
+        run: |
+          if [[ "${CODEOWNERS_TEAM}" == "@rocketreach/devops" ]]; then
+            printf '%s\n' \
+              '# default owners for anything not covered by more specific rules below' \
+              '* @rocketreach/devops' \
+              > .github/CODEOWNERS
+          else
+            printf '%s\n' \
+              '# default owners for anything not covered by more specific rules below' \
+              "* @rocketreach/devops ${CODEOWNERS_TEAM}" \
+              > .github/CODEOWNERS
+          fi
+
+      - name: Update metadata
+        run: |
+          sed -i "s/^type: .*/type: TBD/" .github/metadata.yml
+
+      - name: Create branch, commit, and open PR
+        env:
+          GH_TOKEN: ${{ secrets.ENG_ADMIN_PAT_FOR_BOOTSTRAPPING }}
+        run: |
+          BRANCH="bootstrap/${SERVICE_NAME}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${BRANCH}"
+          git add README.md .github/CODEOWNERS .github/metadata.yml
+          git commit -m "Bootstrap: configure service as ${SERVICE_NAME}"
+          git push -u origin "${BRANCH}"
+
+          gh pr create \
+            --title "${JIRA_TICKET} Bootstrap: configure ${SERVICE_NAME}" \
+            --body "Automated bootstrap configuration for **${SERVICE_NAME}**.
+
+          ## Changes
+          - Set README title to \`${SERVICE_NAME}\`
+          - Set CODEOWNERS to \`${CODEOWNERS_TEAM}\`
+          - Set metadata type to \`TBD\`"
