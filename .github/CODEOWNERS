@@ -1,2 +1,2 @@
-# default devops for anything not enumerated (in CODEOWNERS, the *last* match is what gets used)
-* @rocketreach/devops
+# default owners for anything not covered by more specific rules below
+* @rocketreach/devops @rocketreach/experience-team

@@ -1,4 +1,4 @@
-# {{SERVICE_NAME}}
+# rocketreach-mcp-plugin
 
 A template repository with baseline configuration to conform to RocketReach's GitHub Repository standards.
 
