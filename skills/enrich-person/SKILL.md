@@ -7,10 +7,6 @@ description: Look up a person's profile by name, email, phone, LinkedIn URL, NPI
 
 Take an identifier for a single person and return their RocketReach profile with contact info.
 
-## Endpoint
-
-Use the People Lookup API (GET /person/lookup). This consumes export credits.
-
 ## Input
 
 The user will provide at least one of these to identify the person:
@@ -18,8 +14,9 @@ The user will provide at least one of these to identify the person:
 - LinkedIn URL
 - Name + current employer (both required together)
 - Email address
-- Phone number
+- Phone number (resolved to a profile via person_search first — see step 2)
 - NPI number (US healthcare professionals)
+- RocketReach Profile ID
 
 Examples:
 
@@ -31,19 +28,27 @@ Examples:
 
 ## Workflow
 
-1. **Identify the person.** Pick the strongest identifier the user gave. LinkedIn URL OR NPI match a single person cleanly. If they only gave a name, ask for the employer too, since name alone is ambiguous.
-2. **Pick the lookup type and confirm they have enough credits.** Depending on the user's plan, they will have one of the following types of credits. If the user has multiple active credit types, then we should confirm with the user which type should be used before continuing. The enrichment will consume 1 lookup credit (plus 1 person_export credit if issued on the user's plan; silently skipped if not issued).
+1. **Identify the person.** Pick the strongest identifier the user gave. A RocketReach profile ID, NPI, email, or LinkedIn URL resolves a single person directly; name + current employer usually does too. A **phone number is not a person_lookup identifier** — resolve it to a profile via person_search first (step 2). If they only gave a name, ask for the employer too, since name alone is ambiguous.
+2. **Disambiguate / resolve to a profile (only if needed).** If the input is a phone number, a vague role, or a name without a deterministic identifier, call person_search with the parsed cues (phone, current_employer, name, current_title) and page_size: 5.
+
+   Resolution rules:
+   - Single result → mark auto-resolved, proceed to enrichment.
+   - Top result high confidence (matches all input cues) → present the candidate to the user and proceed.
+   - Multiple plausible candidates → present top 3 with name, title, current employer, location. Ask the user to pick. Mark ambiguous until picked.
+   - Zero results → mark failed, ask the user for a more specific identifier.
+3. **Pick the lookup type and confirm they have enough credits.** Depending on the user's plan, they will have one of the following types of credits. If the user has multiple active credit types, then we should confirm with the user which type should be used before continuing. The enrichment will consume 1 lookup credit (plus 1 person_export credit if issued on the user's plan; silently skipped if not issued).
    - Premium Credit - A or A- grade email or phone
    - Standard Credit - A or A- grade email only
-   - Phone Credit - when a phone is returned
+   - Phone Credit - When a phone is returned
    - Enrich Credit - When the contact exists in our database
-3. **Call /person/lookup** with the identifier and the lookup type.
-4. **Handle in-progress lookups.** A lookup may return status: progress while emails finish verifying. If so, tell the user results are still verifying and that final verified emails will follow (via the check-status endpoint or a webhook).
-5. **Display Credit Cost.** Display if a credit was charged for the lookup. If the criteria below wasn't met, then we can say that no credit was used.
+4. **Call person_lookup** with the resolved identifier and the lookup type. Preferred identifier order: RocketReach profile ID → NPI → email → LinkedIn URL → name + employer. A phone-based lookup uses the profile ID resolved in step 2.
+5. **Handle pending lookups.** The lookup is asynchronous. If it returns `status: pending`, the contact is still resolving — tell the user results are still verifying and that final verified emails/phones will follow. Poll via check_person_status with the returned profile_id, respecting the response's retry_after_seconds hint (~3s between polls). check_person_status does not consume credits.
+6. **Display Credit Cost.** Display if a credit was charged for the lookup. If the criteria below wasn't met, then we can say that no credit was used.
    - Premium Credit - A or A- grade email or phone
    - Standard Credit - A or A- grade email only
-   - Phone Credit - when a phone is returned
+   - Phone Credit - When a phone is returned
    - Enrich Credit - When the contact exists in our database
+7. **Format the contact card.** Use the output template below.
 
 ## Output
 

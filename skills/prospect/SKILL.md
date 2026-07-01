@@ -9,13 +9,6 @@ Turn a plain-English description of an ideal customer into a ranked list of deci
 
 This runs the full pipeline: search for the right people, rank them, then enrich the best ones. Use build-list instead if the user only wants to browse matches without spending credits.
 
-## Endpoints
-
-Two steps, billed separately:
-
-1. **People Search** - POST /person/search. Finds matching people without verified contact info. No export credits.
-2. **People Lookup** - GET /person/lookup. Reveals verified emails/phones per person. Consumes credits per person
-
 ## Input
 
 The user describes their ideal customer in plain English.
@@ -29,13 +22,19 @@ If the description is too vague to search well, ask 1-2 quick questions to clari
 
 ## Examples
 
+- `/rocketreach:prospect VPs of Sales at Series B SaaS companies in the US`
+- `/rocketreach:prospect Heads of Marketing at EU e-commerce companies with 100-500 employees`
+- `/rocketreach:prospect CTOs at fintech startups in NYC`
+- `/rocketreach:prospect Procurement directors at large manufacturers using SAP`
+- `/rocketreach:prospect SDR leaders at companies using Salesforce and Outreach`
+
 ## Workflow
 
-1. **Parse the ICP into search filters.** Use /person/search to map to the fields outlined below
+1. **Parse the ICP into search filters.** Use person_search to map to the fields outlined below
    - Job title → current_title
    - Management level → management_levels
    - Department → department
-   - Location → geo
+   - Location → location
    - Company Industry → company_industry
    - Company Size → company_size
 2. **Check Credits available.** Call account once. Capture the user's lookup credit balance, person_export issuance, and daily API call limit. Compute the batch cost projection:
@@ -66,6 +65,7 @@ If the description is too vague to search well, ask 1-2 quick questions to clari
    - Strong - if more than 75% of the input criteria matches
    - Good - if more than 50% of the input criteria matches
    - Partial - if more than 25% of the input criteria matches
+7. **Format the output.** Use the output template below.
 
 ## Output
 

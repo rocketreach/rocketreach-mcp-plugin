@@ -7,15 +7,6 @@ description: Build a list of people or companies by filtering on title, seniorit
 
 Build a targeted list of people (or companies) from RocketReach and return it as a structured table.
 
-## Endpoints
-
-Building a list is two steps:
-
-1. **Search** — POST /person/search (people) or POST /company/search (companies). Finds matches and returns previews without verified contact info. Search does not consume export credits.
-2. **Lookup** — GET /person/lookup. Reveals verified emails/phones for a specific person. Consumes credits per person (see the enrich-person credit types).
-
-So: search to build the list, then enrich only the people the user picks.
-
 ## Input
 
 The user describes who (or what) they want in natural language.
@@ -46,7 +37,7 @@ Examples:
    - Department → department
    - Skills → skills
    - Education → school / degree
-   - Location → company_geo
+   - Location → location
    - Current employer industry → company_industry
    - Current employer size → company_size
    - Healthcare → health_npi, health_specialization, health_license, health_credentials
@@ -56,13 +47,18 @@ Examples:
    - Identity → name, domain
    - Classification → industry, sic_code, naics_code
    - Size → employees, revenue
-   - Location → geo
+   - Location → location
    - Tech stack → techstack
+   - Competitors (domains) → competitors
    - Other signals → keyword, company_tag
+
+   Use exclude for any "but not X" patterns.
 3. **Run the search.** Call person_search OR company_search with parsed filters. Defaults:
    - page_size: 25 (configurable up to 100).
    - order_by: relevance.
-4. **Show the list first, then offer to enrich it if it is a person list.** Present the results as a table. Do NOT auto-run lookups on everyone - that spends credits. Ask the user which people (or how many) they want verified contact info for, then run /person/lookup on just those, confirming credit type if multiple are active.
+
+   No credits consumed.
+4. **Show the list first, then offer to enrich it if it is a person list.** Present the results as a table using the templates below. Do NOT auto-run lookups on everyone - that spends credits. Ask the user which people (or how many) they want verified contact info for, then run person_lookup on just those, confirming credit type if multiple are active.
 
 ## Output - Person List
 
@@ -78,12 +74,12 @@ Show exactly what was searched on so the user can verify:
 
 ### Results (people)
 
-| # | Name | Title | Company | Location | LinkedIn |
-| --- | --- | --- | --- | --- | --- |
-| 1 | | | | | |
-| 2 | | | | | |
+| # | Name | Title | Company | Location |
+| --- | --- | --- | --- | --- |
+| 1 | | | | |
+| 2 | | | | |
 
-Person Search returns preview fields only (name, current_title, current_employer, location, linkedin_url).
+Person Search returns preview fields only (name, current_title, current_employer, location, and the RocketReach profile ID). LinkedIn URL is not part of the search preview — it comes back from person_lookup at enrichment.
 
 ## Output - Company List
 
@@ -93,17 +89,17 @@ Show exactly what was searched on so the user can verify:
 
 | Filter | Value |
 | --- | --- |
-| company_size | 51-200 |
+| employees | 51-200 |
 | location | California |
 
 ### Results (Company)
 
-| # | Name | Domain | Location | Industry | Size |
-| --- | --- | --- | --- | --- | --- |
-| 1 | | | | | |
-| 2 | | | | | |
+| # | Name | Domain | Industry | Size |
+| --- | --- | --- | --- | --- |
+| 1 | | | | |
+| 2 | | | | |
 
-Company Search returns preview fields only (name, domain, geo, industry, employees).
+Company Search returns preview fields only (name, domain, industry_str, employee_count, and the RocketReach company ID).
 
 ## Next step
 
