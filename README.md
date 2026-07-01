@@ -1,24 +1,31 @@
-# {{SERVICE_NAME}}
+# RocketReach MCP Plugin
 
-A template repository with baseline configuration to conform to RocketReach's GitHub Repository standards.
+Agent Skills for the [RocketReach MCP server](https://github.com/rocketreach) — pre-built workflows that teach AI assistants how to find, enrich, and prospect contacts and companies using RocketReach's data and tools.
 
-Before using this template, make sure that the other templates don't fit your use case better.
+## What are Skills?
 
-## Quick Start
+Skills are pre-built workflows that teach AI assistants how to complete specific tasks using a product's data and tools. Each skill is a `SKILL.md` file with a `name`, a `description`, and a step-by-step workflow the assistant follows. For more, see Claude's [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
 
-- [ ] Create a new repo from this template using the [Guru guide](https://app.getguru.com/card/ToejXMzc/Github-Repository-Creating).  If you used the devops bot to create your new repo from this template, these 2 steps should have been done for you.  If they weren't, do them manually:
-  - [ ] Run the [Bootstrap workflow](.github/workflows/bootstrap.yml) to configure the service name and CODEOWNERS
-  - [ ] Add your new repository to [Renovate](https://github.com/rocketreach/renovate/blob/main/repositories.txt)
+These skills build on the RocketReach MCP tools (`person_search`, `person_lookup`, `company_search`, `company_lookup`, `account`, `check_person_status`) and are invoked as `/rocketreach:<skill-name>`.
 
-## Features
+## Skills
 
-- A blank repo for you to use!
+| Skill | Description |
+| --- | --- |
+| [`enrich-person`](skills/enrich-person/SKILL.md) | Look up a person's profile by name, email, phone, LinkedIn URL, NPI number, or name + employer. Returns their profile and verified contact info (emails, phones). |
+| [`enrich-company`](skills/enrich-company/SKILL.md) | Look up a company profile by name, domain, LinkedIn URL, or ticker symbol. Returns a complete company profile including domain, employee size, location, revenue, industry, and other firmographic details. |
+| [`build-list`](skills/build-list/SKILL.md) | Build a list of people or companies by filtering on title, seniority, department, industry, company size, location, and more. Returns a structured table you can export. |
+| [`prospect`](skills/prospect/SKILL.md) | Describe your ideal customer in plain English and get a ranked table of decision-makers with verified contact data. |
 
 ## Project Structure
 
 ```txt
-├── .github/
-│   ├── workflows/              # CI/CD pipelines
-│   └── actions/                # Reusable composite actions
-└── .gitignore
+├── skills/
+│   ├── enrich-person/SKILL.md
+│   ├── enrich-company/SKILL.md
+│   ├── build-list/SKILL.md
+│   └── prospect/SKILL.md
+└── .github/
+    ├── workflows/              # CI/CD pipelines
+    └── actions/                # Reusable composite actions
 ```
