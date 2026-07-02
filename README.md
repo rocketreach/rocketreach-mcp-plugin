@@ -1,14 +1,43 @@
 # RocketReach MCP Plugin
 
-Agent Skills for the [RocketReach MCP server](https://github.com/rocketreach) — pre-built workflows that teach AI assistants how to find, enrich, and prospect contacts and companies using RocketReach's data and tools.
+Use [RocketReach](https://rocketreach.co) contact and company data from LLM clients that support the Model Context Protocol (MCP). Includes pre-built Agent Skills that teach AI assistants how to find, enrich, and prospect contacts and companies using RocketReach's data and tools.
 
-## What are Skills?
+## What it enables
+
+- Search people by name, title, company, location, and other filters
+- Search companies by name, domain, and firmographics
+- Enrich a person into verified emails, phone numbers, and social profiles
+- Enrich a company with size, industry, location, and other firmographics
+- Check your account and remaining credits
+
+## Installation
+
+### Cowork
+
+[Install in Cowork](https://claude.ai/desktop/customize/plugins/new?marketplace=rocketreach/rocketreach-mcp-plugin&plugin=rocketreach), then restart Cowork.
+
+### Claude Code
+
+```
+/plugin marketplace add rocketreach/rocketreach-mcp-plugin
+/plugin install rocketreach@rocketreach-plugin-marketplace
+```
+
+Restart Claude Code so the MCP server starts.
+
+Other MCP clients (such as Cursor) can register the server directly using the `mcp.json` / `.mcp.json` manifests in this repo.
+
+## Authentication
+
+The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth — no API keys are stored in this repo. After installing, run `/mcp`, select **RocketReach**, and complete sign-in in your browser.
+
+Lookups that enrich a person or company consume RocketReach credits; your client will ask you to confirm before running them.
+
+## Skills
 
 Skills are pre-built workflows that teach AI assistants how to complete specific tasks using a product's data and tools. Each skill is a `SKILL.md` file with a `name`, a `description`, and a step-by-step workflow the assistant follows. For more, see Claude's [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
 
 These skills build on the RocketReach MCP tools (`person_search`, `person_lookup`, `company_search`, `company_lookup`, `account`, `check_person_status`) and are invoked as `/rocketreach:<skill-name>`.
-
-## Skills
 
 | Skill | Description |
 | --- | --- |
@@ -20,12 +49,23 @@ These skills build on the RocketReach MCP tools (`person_search`, `person_lookup
 ## Project Structure
 
 ```txt
-├── skills/
+├── .claude-plugin/     # Claude plugin + marketplace manifests
+├── .codex-plugin/      # Codex plugin manifest
+├── .cursor-plugin/     # Cursor plugin + marketplace manifests
+├── .githooks/          # Local secret-scanning pre-commit hook
+├── .github/            # Repo config (CODEOWNERS, metadata, PR template, renovate)
+├── assets/             # Brand assets (logomark)
+├── scripts/            # install-hooks.sh (git hook setup)
+├── skills/             # Agent Skills, invoked as /rocketreach:<skill-name>
 │   ├── enrich-person/SKILL.md
 │   ├── enrich-company/SKILL.md
 │   ├── build-list/SKILL.md
 │   └── prospect/SKILL.md
-└── .github/
-    ├── workflows/              # CI/CD pipelines
-    └── actions/                # Reusable composite actions
+├── .mcp.json           # Direct HTTP server registration (Claude / Codex)
+├── mcp.json            # mcp-remote bridge registration (Cursor)
+└── LICENSE
 ```
+
+## License
+
+[MIT](LICENSE)
