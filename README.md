@@ -1,24 +1,38 @@
-# {{SERVICE_NAME}}
+# RocketReach MCP Plugin
 
-A template repository with baseline configuration to conform to RocketReach's GitHub Repository standards.
+Use [RocketReach](https://rocketreach.co) contact and company data from LLM clients that support the Model Context Protocol (MCP).
 
-Before using this template, make sure that the other templates don't fit your use case better.
+## What it enables
 
-## Quick Start
+- Search people by name, title, company, location, and other filters
+- Search companies by name, domain, and firmographics
+- Enrich a person into verified emails, phone numbers, and social profiles
+- Enrich a company with size, industry, location, and other firmographics
+- Check your account and remaining credits
 
-- [ ] Create a new repo from this template using the [Guru guide](https://app.getguru.com/card/ToejXMzc/Github-Repository-Creating).  If you used the devops bot to create your new repo from this template, these 2 steps should have been done for you.  If they weren't, do them manually:
-  - [ ] Run the [Bootstrap workflow](.github/workflows/bootstrap.yml) to configure the service name and CODEOWNERS
-  - [ ] Add your new repository to [Renovate](https://github.com/rocketreach/renovate/blob/main/repositories.txt)
+## Installation
 
-## Features
+### Cowork
 
-- A blank repo for you to use!
+[Install in Cowork](TODO: confirm final Cowork install URL), then restart Cowork.
 
-## Project Structure
+### Claude Code
 
-```txt
-├── .github/
-│   ├── workflows/              # CI/CD pipelines
-│   └── actions/                # Reusable composite actions
-└── .gitignore
 ```
+/plugin marketplace add rocketreach/rocketreach-mcp-plugin
+/plugin install rocketreach@rocketreach-plugin-marketplace
+```
+
+Restart Claude Code so the MCP server starts.
+
+Other MCP clients (such as Cursor) can register the server directly using the `mcp.json` / `.mcp.json` manifests in this repo.
+
+## Authentication
+
+The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth — no API keys are stored in this repo. After installing, run `/mcp`, select **RocketReach**, and complete sign-in in your browser.
+
+Lookups that enrich a person or company consume RocketReach credits; your client will ask you to confirm before running them.
+
+## License
+
+[MIT](LICENSE)
