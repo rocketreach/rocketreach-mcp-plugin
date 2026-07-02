@@ -1,0 +1,16 @@
+{
+  "name": "rocketreach-plugin-marketplace",
+  "owner": {
+    "name": "RocketReach"
+  },
+  "metadata": {
+    "description": "TODO"
+  },
+  "plugins": [
+    {
+      "name": "rocketreach",
+      "source": "./",
+      "description": "TODO"
+    }
+  ]
+}
