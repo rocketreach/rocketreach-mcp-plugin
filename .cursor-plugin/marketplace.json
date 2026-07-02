@@ -4,13 +4,13 @@
     "name": "RocketReach"
   },
   "metadata": {
-    "description": "TODO"
+    "description": "Official RocketReach plugin marketplace for Cursor"
   },
   "plugins": [
     {
       "name": "rocketreach",
       "source": "./",
-      "description": "TODO"
+      "description": "Search 700M+ professionals and millions of companies, resolve verified emails and phone numbers, enrich accounts with firmographics and tech stack, and surface buyer signals with the one-click RocketReach MCP server integration for Cursor."
     }
   ]
 }

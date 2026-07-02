@@ -5,12 +5,12 @@
     "url": "https://rocketreach.co"
   },
   "metadata": {
-    "description": "TODO"
+    "description": "Official RocketReach plugin marketplace for Claude"
   },
   "plugins": [
     {
       "name": "rocketreach",
-      "description": "TODO",
+      "description": "Search 700M+ professionals and millions of companies, resolve verified emails and phone numbers, enrich accounts with firmographics and tech stack, and surface buyer signals with the one-click RocketReach MCP server integration for Claude Code and Cowork.",
       "source": "./",
       "homepage": "https://rocketreach.co"
     }
