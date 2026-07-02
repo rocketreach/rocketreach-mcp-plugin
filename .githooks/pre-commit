@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook: block commits that introduce verified secrets.
+#
+# Enable once per clone with:  ./scripts/install-hooks.sh
+# (which sets core.hooksPath to .githooks)
+#
+# Bypass for a confirmed false positive (use sparingly):
+#   SKIP_SECRET_SCAN=1 git commit ...
+set -euo pipefail
+
+if [ "${SKIP_SECRET_SCAN:-}" = "1" ]; then
+  echo "pre-commit: SKIP_SECRET_SCAN=1 set; skipping secret scan."
+  exit 0
+fi
+
+if ! command -v trufflehog >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+pre-commit: trufflehog is not installed, so staged changes cannot be scanned
+for secrets. Install it and retry your commit:
+
+  macOS (Homebrew):  brew install trufflehog
+  Other platforms:   https://github.com/trufflesecurity/trufflehog#installation
+
+To bypass this check for a single commit (use sparingly):
+  SKIP_SECRET_SCAN=1 git commit ...
+EOF
+  exit 1
+fi
+
+# Staged additions / copies / modifications, NUL-delimited. Rename detection is
+# disabled so a renamed file surfaces as an add and is still scanned.
+staged=()
+while IFS= read -r -d '' file; do
+  staged+=("$file")
+done < <(git diff --cached --name-only -z --diff-filter=ACM --no-renames)
+
+if [ "${#staged[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+# Materialize each file's staged blob into a temp tree and scan that, so the
+# scan sees exactly what is being committed -- not the working-tree copy, which
+# can differ under `git add -p` or a stage-then-edit, and may be missing for a
+# file staged then deleted. Scanning one directory also avoids a long argv.
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+for file in "${staged[@]}"; do
+  mkdir -p "$tmp/$(dirname "$file")"
+  git show ":$file" > "$tmp/$file"
+done
+
+echo "pre-commit: scanning ${#staged[@]} staged file(s) for verified secrets..."
+
+# --fail returns non-zero on a verified finding; --no-update skips the network
+# version check. Keep --only-verified in sync with .github/workflows/secret-scan.yml.
+if ! trufflehog filesystem "$tmp" --only-verified --fail --no-update; then
+  cat >&2 <<'EOF'
+
+pre-commit: verified secret(s) detected in staged changes (see above).
+Commit blocked.
+
+Remove the secret and rotate it if it was ever real, then commit again.
+If this is a confirmed false positive:
+  SKIP_SECRET_SCAN=1 git commit ...
+EOF
+  exit 1
+fi
+
+echo "pre-commit: no verified secrets found."
+exit 0
