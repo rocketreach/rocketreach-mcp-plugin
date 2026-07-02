@@ -1,0 +1,59 @@
+{
+  "name": "rocketreach",
+  "version": "0.1.0",
+  "description": "TODO",
+  "author": {
+    "name": "RocketReach",
+    "url": "https://rocketreach.co"
+  },
+  "homepage": "https://rocketreach.co",
+  "repository": "https://github.com/rocketreach/rocketreach-mcp-plugin",
+  "license": "MIT",
+  "keywords": [
+    "rocketreach",
+    "sales",
+    "sales intelligence",
+    "prospecting",
+    "lead generation",
+    "contact data",
+    "find email",
+    "email finder",
+    "verified email",
+    "phone number lookup",
+    "people search",
+    "person lookup",
+    "decision-makers",
+    "company search",
+    "company lookup",
+    "firmographics",
+    "contact enrichment",
+    "company enrichment",
+    "crm data enrichment",
+    "lead lists",
+    "icp",
+    "abm",
+    "gtm",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "RocketReach",
+    "shortDescription": "TODO",
+    "longDescription": "TODO",
+    "developerName": "RocketReach",
+    "category": "Sales and marketing",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "websiteURL": "https://rocketreach.co",
+    "privacyPolicyURL": "https://rocketreach.co/privacy",
+    "termsOfServiceURL": "https://rocketreach.co/terms",
+    "defaultPrompt": [
+      "TODO"
+    ],
+    "brandColor": "#415896",
+    "composerIcon": "./assets/rocketreach-logomark.svg",
+    "logo": "./assets/rocketreach-logomark.svg"
+  }
+}
