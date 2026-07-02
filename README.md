@@ -14,7 +14,7 @@ Use [RocketReach](https://rocketreach.co) contact and company data from LLM clie
 
 ### Cowork
 
-[Install in Cowork](TODO: confirm final Cowork install URL), then restart Cowork.
+[Install in Cowork](https://claude.ai/desktop/customize/plugins/new?marketplace=rocketreach/rocketreach-mcp-plugin&plugin=rocketreach), then restart Cowork.
 
 ### Claude Code
 
