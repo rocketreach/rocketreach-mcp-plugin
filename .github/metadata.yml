@@ -2,3 +2,5 @@ type: TEMPLATE
 artifact: N/A
 build: N/A
 installed_to: N/A
+exempt_no_third_party_gha:
+  - "*"
