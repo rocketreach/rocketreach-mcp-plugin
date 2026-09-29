@@ -7,8 +7,10 @@
     "name": "RocketReach",
     "url": "https://rocketreach.co"
   },
+  "icon": "icon.png",
   "repository": "https://github.com/rocketreach/rocketreach-mcp-plugin",
   "homepage": "https://rocketreach.co",
+  "privacyPolicy": "https://rocketreach.co/privacy",
   "license": "MIT",
   "keywords": [
     "rocketreach",
