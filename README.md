@@ -10,7 +10,7 @@ Use [RocketReach](https://rocketreach.co) contact and company data from LLM clie
 - Enrich a company with size, industry, location, and other firmographics
 - Verify whether an email address is deliverable before you send to it
 - Check your account and remaining credits
-- Look up the exact filter values a search accepts, so searches don't come back empty
+- Look up the exact filter values a search accepts, so a guessed value doesn't quietly narrow or empty a search
 - Report results that look wrong, or send feedback, to the RocketReach team
 
 ## Installation
@@ -45,7 +45,7 @@ Lookups that enrich a person or company consume RocketReach credits, as does ver
 | `list_filter_values` | List the exact values a faceted search field accepts (industry, department, management level, country, state, location, and the signal fields). A guessed value can quietly return fewer results or none. | None |
 | `person_lookup` | Get a person's verified emails, phone numbers, and profile by profile ID, email, LinkedIn URL, NPI number, or name plus employer. Adds them to My Contacts. | 1 lookup credit, plus 1 `person_export` credit if your plan has them |
 | `check_person_status` | Check on person lookups that came back pending. | None |
-| `company_lookup` | Get full company details, including description, industry, size, revenue, tech stack, and social links. Adds the company to My Contacts. | 1 `company_export` credit |
+| `company_lookup` | Get full company details, including description, industry, size, revenue, tech stack, and social links. Adds the company to My Companies. | 1 `company_export` credit |
 | `profile_company_lookup` | Look up a person and their current company in one call. | 1 lookup credit and 1 `company_export` credit, plus 1 `person_export` credit if your plan has them |
 | `email_verify` | Check whether an email address is deliverable: valid, invalid, catchall, or unknown. | 1 `email_verification` credit, refunded when the result is unknown or the address is malformed |
 | `account` | Show your plan, credit balances, and API limits. | None |
