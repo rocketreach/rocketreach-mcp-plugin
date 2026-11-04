@@ -53,6 +53,8 @@ Examples:
    - Other signals → keyword, company_tag
 
    Use exclude for any "but not X" patterns.
+
+   Faceted fields (industry, company_industry, management_levels, department, country, state, location presets, and the signal fields) match exact stored values only. For each one you use, call list_filter_values with the field and one or two key words from the request, then pass the returned `value` exactly. A guessed value silently returns fewer results or none. No credits consumed.
 3. **Run the search.** Call person_search OR company_search with parsed filters. Defaults:
    - page_size: 25 (configurable up to 100).
    - order_by: relevance.
@@ -111,4 +113,4 @@ Company Search returns preview fields only (name, domain, industry_str, employee
 - Keep the search step and the lookup step clearly separate so the user controls credit spend.
 - **No credits consumed.** This is the safe entry point for exploration. The list is a preview; enrichment happens elsewhere.
 - **Result truncation.** When Total matching is high (>1000), the top 25 are not a random sample — they're sorted by relevance. Refinement suggestions help users narrow toward the subset they actually want.
-- **Filter values must resolve.** Industry names, tech-stack names, etc. follow RocketReach's taxonomy. If a user requests a filter that doesn't resolve (e.g., a niche industry name), surface that and suggest the closest matching values.
+- **Filter values must resolve.** Industry names, tech-stack names, etc. follow RocketReach's taxonomy. Use list_filter_values to find the accepted values for faceted fields. If a user requests a filter that doesn't resolve (e.g., a niche industry name), surface that and suggest the closest matching values it returns.
