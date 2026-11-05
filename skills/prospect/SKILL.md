@@ -37,6 +37,8 @@ If the description is too vague to search well, ask 1-2 quick questions to clari
    - Location → location
    - Company Industry → company_industry
    - Company Size → company_size
+
+   The management_levels, department, and company_industry fields match exact stored values only. For each one you use, call list_filter_values with the field and one or two key words from the ICP, then pass the returned `value` exactly. A guessed value silently narrows the search or empties it, so if nothing matches, tell the user and offer the closest returned values before searching. No credits consumed. Pass `location` as free text (a city, state, country, or zip code) without a lookup.
 2. **Check Credits available.** Call account once. Capture the user's lookup credit balance, person_export issuance, and daily API call limit. Compute the batch cost projection:
    - Default: 10 candidates enriched = 10 lookup credits (+ 10 person_export credits if issued).
    - If the projected cost would consume more than the user's available lookup credits, OR if the user is on a free plan, flag this and pause for explicit confirmation before proceeding.

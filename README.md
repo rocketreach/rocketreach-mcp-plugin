@@ -10,6 +10,8 @@ Use [RocketReach](https://rocketreach.co) contact and company data from LLM clie
 - Enrich a company with size, industry, location, and other firmographics
 - Verify whether an email address is deliverable before you send to it
 - Check your account and remaining credits
+- Look up the exact filter values a search accepts, so a guessed value doesn't quietly narrow or empty a search
+- Report results that look wrong, or send feedback, to the RocketReach team
 
 ## Installation
 
@@ -34,11 +36,28 @@ The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth — no 
 
 Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address; your client will ask you to confirm before running them.
 
+## Tools
+
+| Tool | What it does | Credits |
+| --- | --- | --- |
+| `person_search` | Search people by title, employer, seniority, department, skills, education, location, healthcare fields, and buyer signals. Returns profile previews without contact info. | None |
+| `company_search` | Search companies by name, domain, industry, size, revenue, funding, location, tech stack, and buyer signals. | None |
+| `list_filter_values` | List the exact values a faceted search field accepts (industry, department, management level, country, state, location, and the signal fields). A guessed value can quietly return fewer results or none. | None |
+| `person_lookup` | Get a person's verified emails, phone numbers, and profile by profile ID, email, LinkedIn URL, NPI number, or name plus employer. Adds them to My Contacts. | 1 lookup credit, plus 1 `person_export` credit if your plan has them |
+| `check_person_status` | Check on person lookups that came back pending. | None |
+| `company_lookup` | Get full company details, including description, industry, size, revenue, tech stack, and social links. Adds the company to My Companies. | 1 `company_export` credit |
+| `profile_company_lookup` | Look up a person and their current company in one call. | 1 lookup credit and 1 `company_export` credit, plus 1 `person_export` credit if your plan has them |
+| `email_verify` | Check whether an email address is deliverable: valid, invalid, catchall, or unknown. | 1 `email_verification` credit, refunded when the result is unknown or the address is malformed |
+| `account` | Show your plan, credit balances, and API limits. | None |
+| `report_issue` | Report a tool result that looks wrong (empty, incorrect, or stale) to the RocketReach team so it can be fixed. | None |
+| `send_feedback` | Send your feedback to the RocketReach team. Only used when you ask. | None |
+| `ping` | Check that the server is reachable. | None |
+
 ## Skills
 
 Skills are pre-built workflows that teach AI assistants how to complete specific tasks using a product's data and tools. Each skill is a `SKILL.md` file with a `name`, a `description`, and a step-by-step workflow the assistant follows. For more, see Claude's [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
 
-These skills build on the RocketReach MCP tools (`person_search`, `person_lookup`, `company_search`, `company_lookup`, `email_verify`, `account`, `check_person_status`) and are invoked as `/rocketreach:<skill-name>`.
+These skills build on the RocketReach MCP tools above and are invoked as `/rocketreach:<skill-name>`.
 
 | Skill | Description |
 | --- | --- |
