@@ -60,7 +60,7 @@ Examples:
    - order_by: relevance.
 
    No credits consumed.
-4. **Show the list first, then offer to enrich it if it is a person list.** Present the results as a table using the templates below. Do NOT auto-run lookups on everyone - that spends credits. Ask the user which people (or how many) they want verified contact info for, then run person_lookup on just those, confirming credit type if multiple are active.
+4. **Show the list first, then offer to enrich it if it is a person list.** Present the results as a table using the templates below. Do NOT auto-run lookups on everyone - that spends credits. Ask the user which people (or how many) they want verified contact info for, tell them the cost (1 lookup credit per person, plus 1 person_export credit each if their plan has them), and confirm the credit type if multiple are active. Then look up just those. Use person_lookup for one person. For several, call bulk_person_lookup once with each selected profile ID (up to 100 per call). It returns `status: pending` with an `rr_request_id`. Poll check_person_status with that `rr_request_id` every 3–5 seconds (respect `retry_after_seconds`) for up to 60 seconds, then show the resolved contacts and list any still pending so the user can check back.
 
 ## Output - Person List
 

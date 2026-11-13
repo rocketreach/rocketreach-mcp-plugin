@@ -84,6 +84,7 @@ Pick the "best" of each directly from the dedicated fields: Best Work Email = re
 ## Notes
 
 - **Asynchronous lookups.** Some lookups resolve immediately; others return pending and require polling via check_person_status. Typical resolution is a few seconds. The workflow handles both.
+- **Several people at once.** This skill enriches one person. If the user gives a list, call account, then tell the user the projected cost for the whole list (1 lookup credit per person, plus 1 person_export credit each if their plan has them) and their balance, and wait for them to confirm. Then call bulk_person_lookup once with one query per person (up to 100) instead of repeating person_lookup, and poll check_person_status with the returned `rr_request_id` for up to 60 seconds. Report the credits actually charged, which can be lower than the projection (step 6 lists when a lookup is charged).
 - **Credit asymmetry.** person_export is silently skipped if not issued on the user's plan — the lookup still succeeds, but the reported cost should reflect what was actually charged (1 lookup credit only in that case).
 - **Healthcare data presence varies.** NPI, specialization, and credentials are populated only when the resolved person is in RocketReach's US healthcare data set. Their absence is not an error.
 - **Host-level prompts.** The person_lookup tool is marked destructiveHint: true, so the AI client will prompt the user for permission before the lookup call. This is the per-call safety net; the skill should narrate it cleanly rather than try to suppress it.
