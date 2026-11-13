@@ -99,9 +99,11 @@ if color is not None:
         errors.append("interface.brandColor must be a six-digit hex color such as #1ABCFE")
     elif 1.05 / (luminance(color) + 0.05) < 2:
         errors.append("interface.brandColor needs at least 2:1 contrast against white")
+stage_root = os.path.realpath(os.path.dirname(os.path.dirname(out_path)))
 for field in ("logo", "composerIcon"):
     path = ui.get(field, "")
-    if not path or not os.path.isfile(path):
+    staged = os.path.realpath(os.path.join(stage_root, path)) if path else ""
+    if not staged.startswith(stage_root + os.sep) or not os.path.isfile(staged):
         errors.append(f"interface.{field} must point to a file in the package")
 
 servers = json.load(open(".mcp.json")).get("mcpServers", {})
@@ -111,6 +113,8 @@ for name, server in servers.items():
 
 plugin_name = manifest.get("name", "")
 for skill in sorted(os.listdir("skills")):
+    if skill == ".DS_Store":
+        continue
     path = os.path.join("skills", skill, "SKILL.md")
     if not os.path.isfile(path):
         errors.append(f"{path} is missing")
@@ -119,7 +123,17 @@ for skill in sorted(os.listdir("skills")):
     if not front:
         errors.append(f"{path} has no YAML front matter")
         continue
-    fields = dict(re.findall(r"^(name|description):\s*(.+)$", front.group(1), re.M))
+    lines = front.group(1).splitlines()
+    fields = {}
+    for i, line in enumerate(lines):
+        match = re.match(r"(name|description):[ \t]*(.*)$", line)
+        if not match:
+            continue
+        value = match.group(2).strip()
+        wraps = i + 1 < len(lines) and lines[i + 1][:1] in (" ", "\t")
+        if value[:1] in ("|", ">") or wraps:
+            errors.append(f"{path} {match.group(1)} must fit on one line")
+        fields[match.group(1)] = value
     if not fields.get("name") or not fields.get("description"):
         errors.append(f"{path} needs a name and a description")
     elif len(fields["description"]) > 1024:
