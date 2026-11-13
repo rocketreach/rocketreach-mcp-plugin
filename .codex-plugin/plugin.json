@@ -77,8 +77,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "RocketReach",
-    "shortDescription": "Verified contact data for AI agents: search 700M+ professionals and millions of companies with buyer signals, then access emails, phone numbers, and social profiles on demand.",
-    "longDescription": "RocketReach MCP gives AI agents direct access to verified contact data on 700M+ professionals and millions of companies. Search people and companies for free across deep filters — title, seniority, department, skills, industry, size, revenue, funding, and tech stack — and narrow by live signals like purchase intent, hiring activity, funding and other company news, and recent job changes. When you find the right person, access verified emails, phone numbers, and social profiles, and enrich companies with firmographics, technographics, and financials. Route looked-up contacts into named lists and tags for handoff to outreach or your CRM. Searches consume no credits; only contact and company lookups do. Use cases: B2B lead generation, sales prospecting, contact and account enrichment, CRM data enrichment, account research before outreach, list building, and candidate sourcing for recruiting — including healthcare sourcing by NPI, license, and specialization.",
+    "shortDescription": "Verified emails and phones",
+    "longDescription": "RocketReach MCP gives AI agents direct access to verified contact data on 700M+ professionals and millions of companies. Search people and companies for free across deep filters — title, seniority, department, skills, industry, size, revenue, funding, and tech stack — and narrow by live signals like purchase intent, hiring activity, funding and other company news, and recent job changes. When you find the right person, access verified emails, phone numbers, and social profiles, and enrich companies with firmographics, technographics, and financials. Route looked-up contacts into named lists and tags for handoff to outreach or your CRM. Searches consume no credits; contact and company lookups and email verification do. Use cases: B2B lead generation, sales prospecting, contact and account enrichment, CRM data enrichment, account research before outreach, list building, and candidate sourcing for recruiting — including healthcare sourcing by NPI, license, and specialization.",
     "developerName": "RocketReach",
     "category": "Sales and marketing",
     "capabilities": [
@@ -86,12 +86,12 @@
       "Read"
     ],
     "websiteURL": "https://rocketreach.co",
+    "supportURL": "https://docs.rocketreach.co/reference/mcp",
     "privacyPolicyURL": "https://rocketreach.co/privacy",
     "termsOfServiceURL": "https://rocketreach.co/terms",
     "defaultPrompt": [
-      "Build me a list of VPs of Marketing in the US at SaaS companies with 500+ employees and include full profile, contact, and company information",
-      "Find the contact information for the CEO of Apple",
-      "Build a list of Senior Software Engineers in California that have had a job change in the past 90 days",
+      "Build a list of VPs of Marketing at US SaaS companies with 500+ employees, with their contact info",
+      "Find the VP of Sales at HubSpot and get their verified work email",
       "Build a list of US companies that have had a funding event in the last 30 days"
     ],
     "brandColor": "#415896",

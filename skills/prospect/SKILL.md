@@ -49,10 +49,9 @@ If the description is too vague to search well, ask 1-2 quick questions to clari
    - Enriching the top 10 candidates will consume 10 lookup credits (+ 10 person_export credits if issued). Your current balance: [N] lookup credits available.
    - Reply with "go" to proceed, "show me more" to expand to 25, or specify a number to enrich (1–25).
    - Pause for confirmation. Do not consume credits before the user responds.
-5. **Batch enrichment.** On confirmation, call person_lookup in parallel for the confirmed candidate set:
-   - Batch size: ≤ 10 concurrent calls.
-   - Track which calls return pending vs immediate complete data.
-   - For pending results, batch the polling: call check_person_status with all pending profile_ids (up to 100 per call) every 3–5 seconds until all complete or a 60-second timeout. Surface any remaining unresolved at the end.
+5. **Batch enrichment.** On confirmation, call bulk_person_lookup once with one query per confirmed candidate, using each candidate's profile ID from the search (up to 100 per call):
+   - Each query is charged like a single person_lookup. If any query is invalid, the whole call is rejected with no credits charged.
+   - The batch returns `status: pending` with an `rr_request_id`. Poll check_person_status with that `rr_request_id` every 3–5 seconds (respect `retry_after_seconds`) until no record is still pending or 60 seconds pass. Surface any remaining unresolved at the end.
 6. **Rank by ICP fit.** Score each result against the matched criteria:
 
    Matched Criteria to check:
@@ -85,13 +84,12 @@ Summary: Found X matches, enriched top Y. Z credits used ([type]).
 ## Next actions
 
 - `/rocketreach:enrich-person` - drill into one of the resulting leads.
-- `/rocketreach:healthcare-prospect` - when the ICP is healthcare-shaped.
 - `/rocketreach:enrich-company` - look up one of the employer companies in detail.
 - `/rocketreach:build-list` -  for a search-only pass before committing to enrichment credits.
 
 ## Notes
 
-- **Host-level prompts during batch.** Each person_lookup call may trigger a per-call permission prompt in the user's AI client (the lookup tools are destructiveHint: true). Most hosts offer an "allow for this session" affordance after the first prompt; surface this in the first prompt's narration if the host supports it.
+- **Host-level prompts during batch.** bulk_person_lookup is destructiveHint: true, so the user's AI client may ask for permission before the call. One bulk call means one prompt for the whole batch, where separate person_lookup calls would prompt once per person.
 - **person_export asymmetry.** Plans without person_export credits issued will see the lookup succeed but the export credit silently skipped. The reported cost should reflect what was actually charged.
 - **Pending lookups.** Some lookups take longer than a few seconds to resolve. The batched polling pattern handles this; if any remain unresolved after 60 seconds, surface them as pending in the summary so the user knows to check back.
 - **Search-result quality varies by ICP specificity.** Very broad ICPs ("any executive") will produce many low-fit candidates; very narrow ICPs may return < 10 candidates. Iteration Options should propose concrete refinements based on the actual result distribution.

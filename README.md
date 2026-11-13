@@ -6,7 +6,7 @@ Use [RocketReach](https://rocketreach.co) contact and company data from LLM clie
 
 - Search people by name, title, company, location, and other filters
 - Search companies by name, domain, and firmographics
-- Enrich a person into verified emails, phone numbers, and social profiles
+- Enrich a person into verified emails, phone numbers, and social profiles, or up to 100 people in one batch
 - Enrich a company with size, industry, location, and other firmographics
 - Verify whether an email address is deliverable before you send to it
 - Check your account and remaining credits
@@ -44,7 +44,8 @@ Lookups that enrich a person or company consume RocketReach credits, as does ver
 | `company_search` | Search companies by name, domain, industry, size, revenue, funding, location, tech stack, and buyer signals. | None |
 | `list_filter_values` | List the exact values a faceted search field accepts (industry, department, management level, country, state, location, and the signal fields). A guessed value can quietly return fewer results or none. | None |
 | `person_lookup` | Get a person's verified emails, phone numbers, and profile by profile ID, email, LinkedIn URL, NPI number, or name plus employer. Adds them to My Contacts. | 1 lookup credit, plus 1 `person_export` credit if your plan has them |
-| `check_person_status` | Check on person lookups that came back pending. | None |
+| `bulk_person_lookup` | Look up as many as 100 people in one call, using the same identifiers as `person_lookup`. Adds them to My Contacts. | Each person is charged like a `person_lookup` |
+| `check_person_status` | Check on person lookups that came back pending, including every profile in a bulk batch. | None |
 | `company_lookup` | Get full company details, including description, industry, size, revenue, tech stack, and social links. Adds the company to My Companies. | 1 `company_export` credit |
 | `profile_company_lookup` | Look up a person and their current company in one call. | 1 lookup credit and 1 `company_export` credit, plus 1 `person_export` credit if your plan has them |
 | `email_verify` | Check whether an email address is deliverable: valid, invalid, catchall, or unknown. | 1 `email_verification` credit, refunded when the result is unknown or the address is malformed |
