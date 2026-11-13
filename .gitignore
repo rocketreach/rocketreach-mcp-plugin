@@ -19,3 +19,5 @@ Thumbs.db
 
 # Claude
 .claude/
+# Build output (scripts/build-openai-zip.sh)
+dist/

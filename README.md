@@ -72,12 +72,12 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 
 ```txt
 ├── .claude-plugin/     # Claude plugin + marketplace manifests
-├── .codex-plugin/      # Codex plugin manifest
+├── .codex-plugin/      # Codex and ChatGPT plugin manifest
 ├── .cursor-plugin/     # Cursor plugin + marketplace manifests
 ├── .githooks/          # Local secret-scanning pre-commit hook
 ├── .github/            # Repo config (CODEOWNERS, metadata, PR template, renovate)
 ├── assets/             # Brand assets (logomark)
-├── scripts/            # install-hooks.sh (git hook setup)
+├── scripts/            # install-hooks.sh (git hook setup), build-openai-zip.sh (ChatGPT package)
 ├── skills/             # Agent Skills, invoked as /rocketreach:<skill-name>
 │   ├── enrich-person/SKILL.md
 │   ├── enrich-company/SKILL.md
@@ -88,6 +88,14 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 ├── mcp.json            # mcp-remote bridge registration (Cursor)
 └── LICENSE
 ```
+
+## Publishing to ChatGPT
+
+ChatGPT picks up tool changes from the MCP server on its own. Skills and listing text (the `interface` block in `.codex-plugin/plugin.json`) reach ChatGPT only through a package upload:
+
+1. Bump `version` in `.codex-plugin/plugin.json`, or set `VERSION` when you build. OpenAI rejects a version that matches the published one.
+2. Run `./scripts/build-openai-zip.sh`. It checks the manifest against OpenAI's listing limits and writes `dist/rocketreach-openai-<version>.zip`.
+3. In platform.openai.com, open Plugins → RocketReach, select **Upload plugin to make changes**, and upload the ZIP.
 
 ## License
 
