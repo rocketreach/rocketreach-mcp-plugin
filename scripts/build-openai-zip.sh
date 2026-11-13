@@ -28,10 +28,23 @@ cp -R skills assets "$stage/"
 
 # Validate against OpenAI's submission limits and write the staged manifest.
 version="$(python3 -I - "$stage/.codex-plugin/plugin.json" "${VERSION:-}" <<'PY'
-import json, os, re, sys
+import json, os, re, sys, unicodedata
 
 out_path, version_override = sys.argv[1], sys.argv[2]
 errors = []
+
+# interface.category values OpenAI accepts (plugin_category_unknown).
+CATEGORIES = [
+    "Productivity", "Creativity", "Developer Tools", "Business & Operations", "Data & Analytics",
+    "Communication", "Education & Research", "Security", "Finance", "Healthcare", "Travel",
+    "Entertainment", "Other",
+]
+
+
+def luminance(hex_color):
+    channels = [int(hex_color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    channels = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 
 manifest = json.load(open(".codex-plugin/plugin.json"))
 if version_override:
@@ -39,6 +52,15 @@ if version_override:
 version = manifest.get("version", "")
 if not re.fullmatch(r"\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?", version):
     errors.append(f"version {version!r} is not a semantic version")
+
+name = manifest.get("name", "")
+if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", name):
+    errors.append(f"name {name!r} must be up to 64 ASCII letters, digits, _ or -")
+if not manifest.get("description") or len(manifest["description"]) > 1024:
+    errors.append("description is required and must be 1,024 characters or fewer")
+for field, url in (("homepage", manifest.get("homepage")), ("author.url", manifest.get("author", {}).get("url"))):
+    if url is not None and not str(url).startswith("https://"):
+        errors.append(f"{field} must be an HTTPS URL")
 
 if manifest.get("skills") != "./skills/":
     errors.append('"skills" must be "./skills/" or OpenAI ignores the skills')
@@ -64,6 +86,19 @@ if len(prompts) > 3:
 for prompt in prompts:
     if len(prompt) > 128:
         errors.append(f"default prompt is {len(prompt)} characters (limit 128): {prompt[:40]}...")
+    if re.search(r"(^|\s)@\w", prompt):
+        errors.append(f"default prompt must not @mention a server: {prompt[:40]}...")
+normalized = [" ".join(unicodedata.normalize("NFKC", p).split()) for p in prompts]
+if len(set(normalized)) != len(normalized):
+    errors.append("interface.defaultPrompt entries must be unique")
+if "category" in ui and ui["category"] not in CATEGORIES:
+    errors.append(f"interface.category {ui['category']!r} must be one of: {', '.join(CATEGORIES)}")
+color = ui.get("brandColor")
+if color is not None:
+    if not re.fullmatch(r"#[0-9A-Fa-f]{6}", str(color)):
+        errors.append("interface.brandColor must be a six-digit hex color such as #1ABCFE")
+    elif 1.05 / (luminance(color) + 0.05) < 2:
+        errors.append("interface.brandColor needs at least 2:1 contrast against white")
 for field in ("logo", "composerIcon"):
     path = ui.get(field, "")
     if not path or not os.path.isfile(path):

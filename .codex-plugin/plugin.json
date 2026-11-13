@@ -81,7 +81,7 @@
     "shortDescription": "Verified emails and phones",
     "longDescription": "Find verified work emails, phone numbers and company data without leaving the conversation. RocketReach searches 700M+ professional profiles and 60M companies powering sales prospecting, lead generation, recruiting, enrichment, and research.\n\nUse it to:\n- Find the right person at a company and get their email address and phone number\n- Build prospect and lead lists by title, seniority, department, location, skills, years of experience, and company size, revenue and industry\n- Find companies that match your ideal customer profile by industry, headcount, revenue, funding, growth, location and tech stack\n- Prospect on signals: companies hiring for specific roles, company news such as funding, people who recently changed jobs or were promoted, and buyer intent (intent depth depends on your plan)\n- Enrich an existing list from LinkedIn URLs, names and employers, email addresses or NPI numbers\n- Source candidates for recruiting by title, skills, experience, education and location\n- Get company profiles with description, industry, employee count, revenue, founded year, tech stack and social links\n- Check whether an email address is verified and can receive mail",
     "developerName": "RocketReach",
-    "category": "Sales and marketing",
+    "category": "Business & Operations",
     "capabilities": [
       "Interactive",
       "Read"
