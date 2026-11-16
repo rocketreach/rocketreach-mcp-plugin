@@ -40,7 +40,7 @@ git clone https://github.com/rocketreach/rocketreach-mcp-plugin ~/.cursor/plugin
 
 ### Other MCP clients
 
-Point any client that supports remote MCP servers at `https://mcp.rocketreach.co/mcp`. It uses Streamable HTTP and OAuth sign-in.
+Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports Streamable HTTP and OAuth sign-in with dynamic client registration.
 
 ## Authentication
 
