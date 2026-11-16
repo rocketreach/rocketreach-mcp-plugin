@@ -28,13 +28,25 @@ Use [RocketReach](https://rocketreach.co) contact and company data from LLM clie
 
 Restart Claude Code so the MCP server starts.
 
-Other MCP clients (such as Cursor) can register the server directly using the `mcp.json` / `.mcp.json` manifests in this repo.
+### Cursor
+
+RocketReach is in review for the [Cursor Marketplace](https://cursor.com/marketplace). Once it's listed, open **Cursor Settings → Plugins**, search for **RocketReach**, and click **Install**, then complete the RocketReach sign-in prompt. You can also run `/add-plugin rocketreach` in chat.
+
+Until then, or to try a local copy, clone this repo into Cursor's local plugin folder and reload the window (Command Palette → **Developer: Reload Window**):
+
+```
+git clone https://github.com/rocketreach/rocketreach-mcp-plugin ~/.cursor/plugins/local/rocketreach
+```
+
+### Other MCP clients
+
+Point any client that supports remote MCP servers at `https://mcp.rocketreach.co/mcp`. It uses Streamable HTTP and OAuth sign-in.
 
 ## Authentication
 
-The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth — no API keys are stored in this repo. After installing, run `/mcp`, select **RocketReach**, and complete sign-in in your browser.
+The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth, so no API keys are stored in this repo. In Claude Code, run `/mcp` after installing, select **RocketReach**, and complete sign-in in your browser.
 
-Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address; your client will ask you to confirm before running them.
+Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Cursor asks only if you haven't turned on auto-run for MCP tools.
 
 ## Tools
 
@@ -85,7 +97,7 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 │   ├── prospect/SKILL.md
 │   └── verify-email/SKILL.md
 ├── .mcp.json           # Direct HTTP server registration (Claude / Codex)
-├── mcp.json            # mcp-remote bridge registration (Cursor)
+├── mcp.json            # Direct HTTP server registration (Cursor)
 └── LICENSE
 ```
 

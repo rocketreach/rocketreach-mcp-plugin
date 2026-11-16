@@ -10,10 +10,10 @@
 # the ZIP's copy of the manifest, not the file in the repo.
 #
 # The ZIP uses OpenAI's Codex package format: .codex-plugin/plugin.json, .mcp.json,
-# skills/ and the icon in assets/. It leaves out the root mcp.json, which runs
-# mcp-remote locally for Cursor. OpenAI rejects local MCP configuration
-# (mcp_configuration_excluded), and it reads a root mcp.json automatically in some
-# package layouts. The Claude and Cursor manifests are left out too.
+# skills/ and the icon in assets/. It leaves out the root mcp.json, which is
+# Cursor's MCP config. OpenAI reads a root mcp.json automatically in some package
+# layouts, and it rejected the local mcp-remote command that file used to hold
+# (mcp_configuration_excluded). The Claude and Cursor manifests are left out too.
 set -euo pipefail
 
 repo_root="$(git rev-parse --show-toplevel)"
