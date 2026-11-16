@@ -74,13 +74,14 @@
     "npi",
     "healthcare"
   ],
+  "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "RocketReach",
     "shortDescription": "Verified emails and phones",
-    "longDescription": "RocketReach MCP gives AI agents direct access to verified contact data on 700M+ professionals and millions of companies. Search people and companies for free across deep filters — title, seniority, department, skills, industry, size, revenue, funding, and tech stack — and narrow by live signals like purchase intent, hiring activity, funding and other company news, and recent job changes. When you find the right person, access verified emails, phone numbers, and social profiles, and enrich companies with firmographics, technographics, and financials. Route looked-up contacts into named lists and tags for handoff to outreach or your CRM. Searches consume no credits; contact and company lookups and email verification do. Use cases: B2B lead generation, sales prospecting, contact and account enrichment, CRM data enrichment, account research before outreach, list building, and candidate sourcing for recruiting — including healthcare sourcing by NPI, license, and specialization.",
+    "longDescription": "Find verified work emails, phone numbers and company data without leaving the conversation. RocketReach searches 700M+ professional profiles and 60M companies powering sales prospecting, lead generation, recruiting, enrichment, and research.\n\nUse it to:\n- Find the right person at a company and get their email address and phone number\n- Build prospect and lead lists by title, seniority, department, location, skills, years of experience, and company size, revenue and industry\n- Find companies that match your ideal customer profile by industry, headcount, revenue, funding, growth, location and tech stack\n- Prospect on signals: companies hiring for specific roles, company news such as funding, people who recently changed jobs or were promoted, and buyer intent (intent depth depends on your plan)\n- Enrich an existing list from LinkedIn URLs, names and employers, email addresses or NPI numbers\n- Source candidates for recruiting by title, skills, experience, education and location\n- Get company profiles with description, industry, employee count, revenue, founded year, tech stack and social links\n- Check whether an email address is verified and can receive mail",
     "developerName": "RocketReach",
-    "category": "Sales and marketing",
+    "category": "Business & Operations",
     "capabilities": [
       "Interactive",
       "Read"
