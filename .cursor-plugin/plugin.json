@@ -2,7 +2,7 @@
   "name": "rocketreach",
   "displayName": "RocketReach",
   "version": "0.2.0",
-  "category": "Sales and marketing",
+  "category": "integrations",
   "tags": [
     "sales",
     "enrichment",
@@ -86,5 +86,8 @@
     "healthcare"
   ],
   "logo": "./assets/rocketreach-logomark.svg",
-  "mcpServers": "./mcp.json"
+  "mcpServers": "./mcp.json",
+  "minClientVersions": {
+    "cursor": "3.13.0"
+  }
 }
