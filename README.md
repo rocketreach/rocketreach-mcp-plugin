@@ -38,6 +38,14 @@ Until then, or to try a local copy, clone this repo into Cursor's local plugin f
 git clone https://github.com/rocketreach/rocketreach-mcp-plugin ~/.cursor/plugins/local/rocketreach
 ```
 
+### Gemini CLI
+
+```
+gemini extensions install https://github.com/rocketreach/rocketreach-mcp-plugin
+```
+
+Then start `gemini`, run `/mcp auth rocketreach`, and finish signing in to RocketReach in your browser. Sign-in redirects to localhost, so run it on a machine with a browser, not over SSH. The extension installs the skills below too.
+
 ### Other MCP clients
 
 Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports Streamable HTTP and OAuth sign-in with dynamic client registration.
@@ -46,7 +54,7 @@ Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports St
 
 The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth, so no API keys are stored in this repo. In Claude Code, run `/mcp` after installing, select **RocketReach**, and complete sign-in in your browser.
 
-Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Cursor can run them without asking, depending on your auto-run settings.
+Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude, ChatGPT, and Gemini CLI ask you to confirm before running them. Cursor can run them without asking, depending on your auto-run settings.
 
 ## Tools
 
@@ -70,7 +78,7 @@ Lookups that enrich a person or company consume RocketReach credits, as does ver
 
 Skills are pre-built workflows that teach AI assistants how to complete specific tasks using a product's data and tools. Each skill is a `SKILL.md` file with a `name`, a `description`, and a step-by-step workflow the assistant follows. For more, see Claude's [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
 
-These skills build on the RocketReach MCP tools above and are invoked as `/rocketreach:<skill-name>`.
+These skills build on the RocketReach MCP tools above and are invoked as `/rocketreach:<skill-name>`. In Gemini CLI, Gemini picks a skill when your request matches the skill's description.
 
 | Skill | Description |
 | --- | --- |
@@ -98,8 +106,16 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 │   └── verify-email/SKILL.md
 ├── .mcp.json           # Direct HTTP server registration (Claude / Codex)
 ├── mcp.json            # Direct HTTP server registration (Cursor)
+├── gemini-extension.json  # Gemini CLI extension manifest and server registration
 └── LICENSE
 ```
+
+## Publishing to Gemini CLI
+
+The [Gemini CLI extensions gallery](https://geminicli.com/extensions/) finds this repo through its `gemini-cli-extension` GitHub topic and crawls it daily. Gemini CLI checks the repo's latest GitHub release for updates. To ship a change:
+
+1. Bump `version` in `gemini-extension.json`.
+2. Merge to `main`, then publish a GitHub release tagged `v<version>`. Google's docs ask that the tag match the manifest version.
 
 ## Publishing to ChatGPT
 
