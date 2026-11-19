@@ -1,0 +1,10 @@
+{
+  "name": "rocketreach",
+  "version": "0.2.0",
+  "description": "Find the right people and companies with rich search and buyer signals, access verified emails, phone numbers, and social profiles, and enrich accounts with the one-click RocketReach MCP server integration for Gemini CLI.",
+  "mcpServers": {
+    "rocketreach": {
+      "httpUrl": "https://mcp.rocketreach.co/mcp"
+    }
+  }
+}
