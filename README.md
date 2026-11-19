@@ -46,6 +46,23 @@ gemini extensions install https://github.com/rocketreach/rocketreach-mcp-plugin
 
 Then start `gemini`, run `/mcp auth rocketreach`, and finish signing in to RocketReach in your browser. Sign-in redirects to localhost, so run it on a machine with a browser, not over SSH. The extension installs the skills below too.
 
+### Cline
+
+In VS Code, open Cline, click the **MCP Servers** icon, and open the **Remote Servers** tab. Add a server named `rocketreach` with the URL `https://mcp.rocketreach.co/mcp` and the **Streamable HTTP** transport. To edit the JSON instead, open **Configure MCP Servers** on the Configure tab and add this to `cline_mcp_settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "rocketreach": {
+      "type": "streamableHttp",
+      "url": "https://mcp.rocketreach.co/mcp"
+    }
+  }
+}
+```
+
+Write `streamableHttp` with a capital H. Without `type`, Cline falls back to the older SSE transport and can't connect. When Cline shows **Authentication required**, click **Authenticate** and sign in to RocketReach in your browser. If you'd rather have Cline set it up, point it at [llms-install.md](llms-install.md).
+
 ### Other MCP clients
 
 Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports Streamable HTTP and OAuth sign-in with dynamic client registration.
@@ -54,7 +71,7 @@ Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports St
 
 The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth, so no API keys are stored in this repo. In Claude Code, run `/mcp` after installing, select **RocketReach**, and complete sign-in in your browser.
 
-Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Gemini CLI asks too, unless you started it with `--yolo` or chose an always-allow option for the tool or server. Cursor can run them without asking, depending on your auto-run settings.
+Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Gemini CLI asks too, unless you started it with `--yolo` or chose an always-allow option for the tool or server. Cline asks before each MCP tool call unless you auto-approve the tool. Cursor can run them without asking, depending on your auto-run settings.
 
 ## Tools
 
@@ -96,7 +113,7 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 ├── .cursor-plugin/     # Cursor plugin + marketplace manifests
 ├── .githooks/          # Local secret-scanning pre-commit hook
 ├── .github/            # Repo config (CODEOWNERS, metadata, PR template, renovate)
-├── assets/             # Brand assets (logomark)
+├── assets/             # Brand assets (logomark, 400×400 PNG logo for directory listings)
 ├── scripts/            # install-hooks.sh (git hook setup), build-openai-zip.sh (ChatGPT package)
 ├── skills/             # Agent Skills, invoked as /rocketreach:<skill-name>
 │   ├── enrich-person/SKILL.md
@@ -107,6 +124,7 @@ These skills build on the RocketReach MCP tools above and are invoked as `/rocke
 ├── .mcp.json           # Direct HTTP server registration (Claude / Codex)
 ├── mcp.json            # Direct HTTP server registration (Cursor)
 ├── gemini-extension.json  # Gemini CLI extension manifest and server registration
+├── llms-install.md     # Setup steps for AI agents (Cline Marketplace installs)
 └── LICENSE
 ```
 
