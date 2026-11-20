@@ -63,6 +63,24 @@ In VS Code, open Cline, click the **MCP Servers** icon, and open the **Remote Se
 
 Write `streamableHttp` with a capital H. Without `type`, Cline falls back to the older SSE transport and can't connect. When Cline shows **Authentication required**, click **Authenticate** and sign in to RocketReach in your browser. If you'd rather have Cline set it up, point it at [llms-install.md](llms-install.md).
 
+### Kiro
+
+[![Add to Kiro](https://kiro.dev/images/add-to-kiro.svg)](https://kiro.dev/launch/mcp/add?name=rocketreach&config=%7B%22url%22%3A%22https%3A%2F%2Fmcp.rocketreach.co%2Fmcp%22%7D)
+
+Click **Add to Kiro** to add the RocketReach server to the Kiro IDE. To add it by hand, put this in `~/.kiro/settings/mcp.json` for every workspace, or in `.kiro/settings/mcp.json` for one workspace:
+
+```json
+{
+  "mcpServers": {
+    "rocketreach": {
+      "url": "https://mcp.rocketreach.co/mcp"
+    }
+  }
+}
+```
+
+If the RocketReach sign-in page doesn't open by itself, open the Command Palette, run **Focus on MCP Servers view**, and click **Authenticate** next to RocketReach.
+
 ### Other MCP clients
 
 Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports Streamable HTTP and OAuth sign-in with dynamic client registration.
