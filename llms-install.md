@@ -30,7 +30,7 @@ RocketReach runs a hosted remote MCP server at `https://mcp.rocketreach.co/mcp`.
 
 Notes:
 
-- `person_lookup`, `bulk_person_lookup`, `company_lookup`, `profile_company_lookup`, and `email_verify` spend the user's RocketReach credits. Leave them out of `autoApprove` so the user confirms each call. Searches, `list_filter_values`, `check_person_status`, `account`, and `ping` are free.
+- `person_lookup`, `bulk_person_lookup`, `company_lookup`, `profile_company_lookup`, and `email_verify` spend the user's RocketReach credits. Leave them out of `autoApprove` so Cline asks before each call. That only holds while Cline's **Use MCP servers** auto-approve setting is off. When it's on, Cline approves every MCP tool call, these included, so tell the user. Searches, `list_filter_values`, `check_person_status`, `account`, and `ping` are free.
 - A person lookup can come back pending. Call `check_person_status` with the returned profile IDs to get the finished result.
 - If **Authentication required** appears again later, the sign-in has expired. Click **Authenticate** again, or delete the server and add it back.
 - The server only runs at `https://mcp.rocketreach.co/mcp`. Don't configure a localhost URL.

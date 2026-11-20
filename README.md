@@ -71,7 +71,7 @@ Any MCP client can connect to `https://mcp.rocketreach.co/mcp` if it supports St
 
 The RocketReach MCP server (`https://mcp.rocketreach.co/mcp`) uses OAuth, so no API keys are stored in this repo. In Claude Code, run `/mcp` after installing, select **RocketReach**, and complete sign-in in your browser.
 
-Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Gemini CLI asks too, unless you started it with `--yolo` or chose an always-allow option for the tool or server. Cline asks before each MCP tool call unless you auto-approve the tool. Cursor can run them without asking, depending on your auto-run settings.
+Lookups that enrich a person or company consume RocketReach credits, as does verifying an email address. Claude and ChatGPT ask you to confirm before running them. Gemini CLI asks too, unless you started it with `--yolo` or chose an always-allow option for the tool or server. Cline asks before each MCP tool call unless you auto-approve that tool or turn on the **Use MCP servers** auto-approve setting, which approves every MCP tool. Cursor can run them without asking, depending on your auto-run settings.
 
 ## Tools
 
